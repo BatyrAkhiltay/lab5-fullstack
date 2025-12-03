@@ -58,21 +58,14 @@ public class SecurityConfig {
         http.csrf((csrf) -> csrf.disable())
                 .cors(withDefaults())
                 .sessionManagement((sessionManagement) ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        sessionManagement.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
-                                .requestMatchers(
-                                        "/swagger-ui/**",
-                                        "/swagger-ui.html",
-                                        "/v3/api-docs/**",
-                                        "/v3/api-docs.yaml",
-                                        "/swagger-resources/**",
-                                        "/webjars/**"
-                                ).permitAll()
-                                // Все остальные запросы требуют аутентификации
+                                .requestMatchers(HttpMethod.POST, "/login").permitAll()
                                 .anyRequest().authenticated())
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling((exceptionHandling) ->
                         exceptionHandling.authenticationEntryPoint(exceptionHandler));
 
